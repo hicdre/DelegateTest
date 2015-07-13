@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{9e98d40f-c5cb-44e1-bb3a-d0820872e899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="export">
+      <UniqueIdentifier>{526dc98a-34ac-49ee-97fe-2cd7435ae968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="private">
+      <UniqueIdentifier>{592ecb8e-b916-4324-8a6c-9d9b97e03fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="delegate">
+      <UniqueIdentifier>{24b12a31-7552-4276-be39-ce05bc67f0e3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="Delegate\DelegateInstanceInterfaceImpl.inl">
+      <Filter>delegate</Filter>
+    </None>
+    <None Include="Delegate\DelegateInstancesImpl.inl">
+      <Filter>delegate</Filter>
+    </None>
+    <None Include="Delegate\DelegateInstancesImpl_Variadics.inl">
+      <Filter>delegate</Filter>
+    </None>
+    <None Include="Delegate\DelegateSignatureImpl.inl">
+      <Filter>delegate</Filter>
+    </None>
+    <None Include="Delegate\DelegateSignatureImpl_Variadics.inl">
+      <Filter>delegate</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>build</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>build</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionChangedHandler.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservableCollection.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyChangedHandler.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyObject.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCoreTypes.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCore.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="Ptr.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="IObject.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="HandlerList.h">
+      <Filter>private</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\Delegate.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateBase.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateCombinations.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateCombinations_Variadics.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\DelegateInstanceInterface_Variadics.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\IDelegateInstance.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\IntegerSequence.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\MulticastDelegateBase.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate\Tuple.h">
+      <Filter>delegate</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>build</Filter>
+    </ClCompile>
+    <ClCompile Include="ObservableCollection.cpp">
+      <Filter>export</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyChangedHandler.cpp">
+      <Filter>export</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyObject.cpp">
+      <Filter>export</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>build</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionChangedHandler.cpp">
+      <Filter>export</Filter>
+    </ClCompile>
+    <ClCompile Include="Delegate\DelegateHandle.cpp">
+      <Filter>delegate</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
