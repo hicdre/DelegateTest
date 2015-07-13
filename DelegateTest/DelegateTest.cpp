@@ -14,7 +14,7 @@ public:
 	}
 };
 
-DECLARE_DELEGATE_OneParam( FStringDelegate, std::string );
+DECLARE_DELEGATE_OneParam( FStringDelegate, const std::string& );
 
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -25,6 +25,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	WriteToLogDelegate.BindSP( LogWriter, &FLogWriter::WriteToLog );
 
 	WriteToLogDelegate.Execute( "Delegates are spiffy!");
+
+	LogWriter = nullptr;
+
+	WriteToLogDelegate.Execute("Delegates are spiffy!");
+
 	return 0;
 }
 

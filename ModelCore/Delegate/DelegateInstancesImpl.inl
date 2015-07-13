@@ -127,12 +127,12 @@ public:
 
 	virtual bool HasSameObject( const void* InUserObject ) const override
 	{
-		return UserObject.HasSameObject(InUserObject);
+		return UserObject.lock().get() == InUserObject;
 	}
 
 	virtual bool IsSafeToExecute( ) const override
 	{
-		return UserObject.IsValid();
+		return !UserObject.expired();
 	}
 
 public:
@@ -147,13 +147,16 @@ public:
 	virtual RetValType Execute( FUNC_PARAM_LIST ) const override
 	{
 		// Verify that the user object is still valid.  We only have a weak reference to it.
-		std::shared_ptr<UserClass> SharedUserObject( UserObject.Pin());
-		checkSlow(SharedUserObject.IsValid());
+		std::shared_ptr<UserClass> SharedUserObject( UserObject.lock());
+		if (!SharedUserObject)
+			return;
+		//checkSlow(SharedUserObject.IsValid());
 
 		// Safely remove const to work around a compiler issue with instantiating template permutations for 
 		// overloaded functions that take a function pointer typedef as a member of a templated class.  In
 		// all cases where this code is actually invoked, the UserClass will already be a const pointer.
-		typedef typename TRemoveConst<UserClass>::Type MutableUserClass;
+		//typedef typename TRemoveConst<UserClass>::Type MutableUserClass;
+		typedef typename UserClass MutableUserClass;
 		MutableUserClass* MutableUserObject = const_cast<MutableUserClass*>(SharedUserObject.get());
 
 		// Call the member function on the user's object.  And yes, this is the correct C++ syntax for calling a
@@ -173,7 +176,7 @@ public:
 	{
 		// Verify that the user object is still valid.  We only have a weak reference to it.
 		std::shared_ptr<UserClass> SharedUserObject(UserObject.lock());
-		if (SharedUserObject.IsValid())
+		if (SharedUserObject)
 		{
 			Execute(FUNC_PARAM_PASSTHRU);
 
@@ -192,7 +195,7 @@ public:
 			(InOtherDelegate.GetType() == EDelegateInstanceType::ThreadSafeSharedPointerMethod) ||
 			(InOtherDelegate.GetType() == EDelegateInstanceType::RawMethod))
 		{
-			return (GetRawMethodPtrInternal() == InOtherDelegate.GetRawMethodPtr() && UserObject.HasSameObject(InOtherDelegate.GetRawUserObject()));
+			return (GetRawMethodPtrInternal() == InOtherDelegate.GetRawMethodPtr() && UserObject.lock().get() == InOtherDelegate.GetRawUserObject());
 		}
 
 		return false;
@@ -235,7 +238,7 @@ protected:
 	 */
 	FORCEINLINE const void* GetRawUserObjectInternal( ) const
 	{
-		return UserObject.Pin().Get();
+		return UserObject.lock().get();
 	}
 
 	/**

@@ -4,9 +4,14 @@
 #include "ModelCore/IObject.h"
 #include "ModelCore/Ptr.h"
 
+#include <memory>
+#include <assert.h>
+
 typedef IObject UObject;
 
 typedef Ptr<IObject> FWeakObjectPtr;
+
+#define checkSlow(p)  assert(p)
 // #include "SharedPointer.h"
 // #include "WeakObjectPtrTemplates.h"
 #include "IDelegateInstance.h"
@@ -195,87 +200,87 @@ typedef Ptr<IObject> FWeakObjectPtr;
 	};
 
 /** Declare user's dynamic delegate, with wrapper proxy method for executing the delegate */
-#define FUNC_DECLARE_DYNAMIC_DELEGATE( TWeakPtr, Suffix, DynamicDelegateName, ExecFunction, FuncParamList, FuncParamPassThru, ... ) \
-	class DynamicDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__) \
-	{ \
-	public: \
-		/** Default constructor */ \
-		DynamicDelegateName() \
-		{ \
-		} \
-		\
-		/** Construction from an FScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
-		explicit DynamicDelegateName( const TScriptDelegate<>& InScriptDelegate ) \
-			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__)( InScriptDelegate ) \
-		{ \
-		} \
-		\
-		/** Execute the delegate.  If the function pointer is not valid, an error will occur. */ \
-		inline void Execute( FuncParamList ) const \
-		{ \
-			/* Verify that the user object is still valid.  We only have a weak reference to it. */ \
-			checkSlow( IsBound() ); \
-			ExecFunction( FuncParamPassThru ); \
-		} \
-		/** Execute the delegate, but only if the function pointer is still valid */ \
-		inline bool ExecuteIfBound( FuncParamList ) const \
-		{ \
-			if( IsBound() ) \
-			{ \
-				ExecFunction( FuncParamPassThru ); \
-				return true; \
-			} \
-			return false; \
-		} \
-	};
+// #define FUNC_DECLARE_DYNAMIC_DELEGATE( TWeakPtr, Suffix, DynamicDelegateName, ExecFunction, FuncParamList, FuncParamPassThru, ... ) \
+// 	class DynamicDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__) \
+// 	{ \
+// 	public: \
+// 		/** Default constructor */ \
+// 		DynamicDelegateName() \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Construction from an FScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
+// 		explicit DynamicDelegateName( const TScriptDelegate<>& InScriptDelegate ) \
+// 			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__)( InScriptDelegate ) \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Execute the delegate.  If the function pointer is not valid, an error will occur. */ \
+// 		inline void Execute( FuncParamList ) const \
+// 		{ \
+// 			/* Verify that the user object is still valid.  We only have a weak reference to it. */ \
+// 			checkSlow( IsBound() ); \
+// 			ExecFunction( FuncParamPassThru ); \
+// 		} \
+// 		/** Execute the delegate, but only if the function pointer is still valid */ \
+// 		inline bool ExecuteIfBound( FuncParamList ) const \
+// 		{ \
+// 			if( IsBound() ) \
+// 			{ \
+// 				ExecFunction( FuncParamPassThru ); \
+// 				return true; \
+// 			} \
+// 			return false; \
+// 		} \
+// 	};
 
-#define FUNC_DECLARE_DYNAMIC_DELEGATE_RETVAL(TWeakPtr, Suffix, DynamicDelegateName, ExecFunction, RetValType, FuncParamList, FuncParamPassThru, ...) \
-	class DynamicDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__) \
-	{ \
-	public: \
-		/** Default constructor */ \
-		DynamicDelegateName() \
-		{ \
-		} \
-		\
-		/** Construction from an FScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
-		explicit DynamicDelegateName( const TScriptDelegate<>& InScriptDelegate ) \
-			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__)( InScriptDelegate ) \
-		{ \
-		} \
-		\
-		/** Execute the delegate.  If the function pointer is not valid, an error will occur. */ \
-		inline RetValType Execute( FuncParamList ) const \
-		{ \
-			/* Verify that the user object is still valid.  We only have a weak reference to it. */ \
-			checkSlow( IsBound() ); \
-			return ExecFunction( FuncParamPassThru ); \
-		} \
-	};
+// #define FUNC_DECLARE_DYNAMIC_DELEGATE_RETVAL(TWeakPtr, Suffix, DynamicDelegateName, ExecFunction, RetValType, FuncParamList, FuncParamPassThru, ...) \
+// 	class DynamicDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__) \
+// 	{ \
+// 	public: \
+// 		/** Default constructor */ \
+// 		DynamicDelegateName() \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Construction from an FScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
+// 		explicit DynamicDelegateName( const TScriptDelegate<>& InScriptDelegate ) \
+// 			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicDelegate, Suffix, __VA_ARGS__)( InScriptDelegate ) \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Execute the delegate.  If the function pointer is not valid, an error will occur. */ \
+// 		inline RetValType Execute( FuncParamList ) const \
+// 		{ \
+// 			/* Verify that the user object is still valid.  We only have a weak reference to it. */ \
+// 			checkSlow( IsBound() ); \
+// 			return ExecFunction( FuncParamPassThru ); \
+// 		} \
+// 	};
 
 
 /** Declare user's dynamic multi-cast delegate, with wrapper proxy method for executing the delegate */
-#define FUNC_DECLARE_DYNAMIC_MULTICAST_DELEGATE(TWeakPtr, Suffix, DynamicMulticastDelegateName, ExecFunction, FuncParamList, FuncParamPassThru, ...) \
-class DynamicMulticastDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicMulticastDelegate, Suffix, __VA_ARGS__) \
-	{ \
-	public: \
-		/** Default constructor */ \
-		DynamicMulticastDelegateName() \
-		{ \
-		} \
-		\
-		/** Construction from an FMulticastScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
-		explicit DynamicMulticastDelegateName( const TMulticastScriptDelegate<>& InMulticastScriptDelegate ) \
-			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicMulticastDelegate, Suffix, __VA_ARGS__)( InMulticastScriptDelegate ) \
-		{ \
-		} \
-		\
-		/** Broadcasts this delegate to all bound objects, except to those that may have expired */ \
-		void Broadcast( FuncParamList ) const \
-		{ \
-			ExecFunction( FuncParamPassThru ); \
-		} \
-	};
+// #define FUNC_DECLARE_DYNAMIC_MULTICAST_DELEGATE(TWeakPtr, Suffix, DynamicMulticastDelegateName, ExecFunction, FuncParamList, FuncParamPassThru, ...) \
+// class DynamicMulticastDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicMulticastDelegate, Suffix, __VA_ARGS__) \
+// 	{ \
+// 	public: \
+// 		/** Default constructor */ \
+// 		DynamicMulticastDelegateName() \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Construction from an FMulticastScriptDelegate must be explicit.  This is really only used by UObject system internals. */ \
+// 		explicit DynamicMulticastDelegateName( const TMulticastScriptDelegate<>& InMulticastScriptDelegate ) \
+// 			: FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(TWeakPtr, TBaseDynamicMulticastDelegate, Suffix, __VA_ARGS__)( InMulticastScriptDelegate ) \
+// 		{ \
+// 		} \
+// 		\
+// 		/** Broadcasts this delegate to all bound objects, except to those that may have expired */ \
+// 		void Broadcast( FuncParamList ) const \
+// 		{ \
+// 			ExecFunction( FuncParamPassThru ); \
+// 		} \
+// 	};
 
 
 // Simple macro chain to concatenate code text
@@ -285,19 +290,19 @@ class DynamicMulticastDelegateName : public FUNC_DECLARE_DYNAMIC_DELEGATE_BASE(T
 
 
 // Helper macro for calling BindDynamic() on dynamic delegates.  Automatically generates the function name string.
-#define BindDynamic( UserObject, FuncName ) __Internal_BindDynamic( UserObject, FuncName, TEXT( #FuncName ) )
+//#define BindDynamic( UserObject, FuncName ) __Internal_BindDynamic( UserObject, FuncName, TEXT( #FuncName ) )
 
 // Helper macro for calling AddDynamic() on dynamic multi-cast delegates.  Automatically generates the function name string.
-#define AddDynamic( UserObject, FuncName ) __Internal_AddDynamic( UserObject, FuncName, TEXT( #FuncName ) )
+//#define AddDynamic( UserObject, FuncName ) __Internal_AddDynamic( UserObject, FuncName, TEXT( #FuncName ) )
 
 // Helper macro for calling AddUniqueDynamic() on dynamic multi-cast delegates.  Automatically generates the function name string.
-#define AddUniqueDynamic( UserObject, FuncName ) __Internal_AddUniqueDynamic( UserObject, FuncName, TEXT( #FuncName ) )
+//#define AddUniqueDynamic( UserObject, FuncName ) __Internal_AddUniqueDynamic( UserObject, FuncName, TEXT( #FuncName ) )
 
 // Helper macro for calling RemoveDynamic() on dynamic multi-cast delegates.  Automatically generates the function name string.
-#define RemoveDynamic( UserObject, FuncName ) __Internal_RemoveDynamic( UserObject, FuncName, TEXT( #FuncName ) )
+//#define RemoveDynamic( UserObject, FuncName ) __Internal_RemoveDynamic( UserObject, FuncName, TEXT( #FuncName ) )
 
 // Helper macro for calling IsAlreadyBound() on dynamic multi-cast delegates.  Automatically generates the function name string.
-#define IsAlreadyBound( UserObject, FuncName ) __Internal_IsAlreadyBound( UserObject, FuncName, TEXT( #FuncName ) )
+//#define IsAlreadyBound( UserObject, FuncName ) __Internal_IsAlreadyBound( UserObject, FuncName, TEXT( #FuncName ) )
 
 
 namespace UE4Delegates_Private
@@ -321,7 +326,7 @@ namespace UE4Delegates_Private
 
 /*********************************************************************************************************************/
 
-#define DELEGATE_DEPRECATED(message) DEPRECATED(4.7, message)
+#define DELEGATE_DEPRECATED(message) 
 
 // We define this as a guard to prevent DelegateSignatureImpl.inl being included outside of this file
 #define __Delegate_h__
