@@ -17,6 +17,9 @@
     <Filter Include="delegate">
       <UniqueIdentifier>{24b12a31-7552-4276-be39-ce05bc67f0e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="myself">
+      <UniqueIdentifier>{854b46a0-8b68-41e5-8b34-7717422871d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -97,6 +100,15 @@
     <ClInclude Include="Delegate\Tuple.h">
       <Filter>delegate</Filter>
     </ClInclude>
+    <ClInclude Include="Weak.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate_NoParams.h">
+      <Filter>export</Filter>
+    </ClInclude>
+    <ClInclude Include="DelegateBase.h">
+      <Filter>export</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +130,9 @@
       <Filter>export</Filter>
     </ClCompile>
     <ClCompile Include="Delegate\DelegateHandle.cpp">
+      <Filter>delegate</Filter>
+    </ClCompile>
+    <ClCompile Include="DelegateBase.cpp">
       <Filter>delegate</Filter>
     </ClCompile>
   </ItemGroup>
