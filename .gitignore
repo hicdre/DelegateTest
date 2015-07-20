@@ -45,3 +45,6 @@ ipch/
 
 #################
 /build/
+/Debug/
+/DelegateTest/Debug/
+/ModelCore/Debug/

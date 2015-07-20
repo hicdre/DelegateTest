@@ -84,6 +84,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DelegateBase.h" />
     <ClInclude Include="Delegate\Delegate.h" />
     <ClInclude Include="Delegate\DelegateBase.h" />
     <ClInclude Include="Delegate\DelegateCombinations.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="Delegate\IntegerSequence.h" />
     <ClInclude Include="Delegate\MulticastDelegateBase.h" />
     <ClInclude Include="Delegate\Tuple.h" />
+    <ClInclude Include="Delegate_NoParams.h" />
     <ClInclude Include="ModelCore.h" />
     <ClInclude Include="ModelCoreTypes.h" />
     <ClInclude Include="CollectionChangedHandler.h" />
@@ -104,9 +106,11 @@
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Weak.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollectionChangedHandler.cpp" />
+    <ClCompile Include="DelegateBase.cpp" />
     <ClCompile Include="Delegate\DelegateHandle.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
