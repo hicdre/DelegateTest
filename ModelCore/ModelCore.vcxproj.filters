@@ -109,6 +109,9 @@
     <ClInclude Include="DelegateBase.h">
       <Filter>export</Filter>
     </ClInclude>
+    <ClInclude Include="WeakRef.h">
+      <Filter>export</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
