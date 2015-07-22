@@ -18,9 +18,10 @@ enum CollectionChangedAction
 	NotifyCollectionReset,//这种情况需要重新获取
 };
 
-class MODELCORE_API CollectionChangedArgs : public IObject
+
+class MODELCORE_API CollectionChangedArgs : public IObjectImpl<CollectionChangedArgs, IObject>
 {
-	IMPLEMENT_IOBJECT_THREADSAFE()
+	//IMPLEMENT_IOBJECT_THREADSAFE()
 public:
 	CollectionChangedArgs(CollectionChangedAction action);
 

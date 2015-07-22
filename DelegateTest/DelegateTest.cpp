@@ -4,6 +4,7 @@
 #include "stdafx.h"
 //#include "ModelCore/Delegate/Delegate.h"
 #include "ModelCore/Delegate_NoParams.h"
+#include "ModelCore/ModelCore.h"
 
 
 class FLogWriter

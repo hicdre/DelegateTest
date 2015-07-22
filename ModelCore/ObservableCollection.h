@@ -4,13 +4,17 @@
 #include "ModelCore/HandlerList.h"
 #include <functional>
 
-
-class MODELCORE_API ObservableCollection 
+class IObservableCollectionBase 
 	: public ICollectionChangedNotifier
 	, public IPropertyChangedNotifier
 	, public IPropertyObject
 {
-	IMPLEMENT_IOBJECT_THREADSAFE();
+};
+
+class MODELCORE_API ObservableCollection 
+	: public IObjectImpl<ObservableCollection, IObservableCollectionBase>	
+{
+	//IMPLEMENT_IOBJECT_THREADSAFE();
 public:
 	ObservableCollection();
 	~ObservableCollection();

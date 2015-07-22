@@ -107,6 +107,81 @@ private:
 	VarTwoType var2_;
 };
 
+template<class UserClass>
+class WeakMethodDelegateBase_NoParams_NoVar : public MethodDelegateBase_NoParams
+{
+public:
+	typedef void (UserClass::*FMethodPtr)( void );
+	WeakMethodDelegateBase_NoParams_NoVar(const WPtr<UserClass>& object, 
+		FMethodPtr method) : weakObject_(object), methodPtr_(method) {}
+
+	virtual void Execute() const override
+	{
+		UserClass* rawObject = weakObject_.get();
+		if (!rawObject)
+			return;
+
+		return (rawObject->*methodPtr_)();
+	}
+		
+private:
+	WPtr<UserClass> weakObject_;
+	FMethodPtr methodPtr_;	
+};
+
+template<class UserClass, class VarOneType>
+class WeakMethodDelegateBase_NoParams_OneVar : public MethodDelegateBase_NoParams
+{
+public:
+	typedef void (UserClass::*FMethodPtr)( VarOneType );
+	WeakMethodDelegateBase_NoParams_OneVar(const WPtr<UserClass>& object, 
+		FMethodPtr method,
+		VarOneType var1) : weakObject_(object), methodPtr_(method)
+		, var1_(var1)
+	{}
+
+	void Execute() const
+	{
+		UserClass* rawObject = weakObject_.get();
+		if (!rawObject)
+			return;
+
+		return (rawObject->*methodPtr_)(var1_);
+	}	
+private:
+	WPtr<UserClass> weakObject_;
+	FMethodPtr methodPtr_;
+	VarOneType var1_;
+};
+
+template<class UserClass, class VarOneType, class VarTwoType>
+class WeakMethodDelegateBase_NoParams_TwoVar : public MethodDelegateBase_NoParams
+{
+public:
+	typedef void (UserClass::*FMethodPtr)( VarOneType, VarTwoType );
+	WeakMethodDelegateBase_NoParams_TwoVar(const WPtr<UserClass>& object, 
+		FMethodPtr method,
+		VarOneType var1, VarTwoType var2) 
+		: weakObject_(object), methodPtr_(method)
+		, var1_(var1), var2_(var2)
+	{}
+
+	void Execute() const
+	{
+		UserClass* rawObject = weakObject_.get();
+		if (!rawObject)
+			return;
+
+		return (rawObject->*methodPtr_)(var1_, var2_);
+	}
+
+private:
+	WPtr<UserClass> weakObject_;
+	FMethodPtr methodPtr_;
+	VarOneType var1_;
+	VarTwoType var2_;
+};
+
 
 template<class FunctorType>
 class FunctorMethodDelegateBase_NoParams_NoVar : public MethodDelegateBase_NoParams
@@ -189,6 +264,29 @@ public:
 		Unbind();
 		instance_ = new SPMethodDelegateBase_NoParams_TwoVar<UserClass, VarOneType, VarTwoType>(object, func, var1, var2);
 	}
+	
+	template< class UserClass>
+	void BindW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_NoVar< UserClass >::FMethodPtr func)
+	{
+		Unbind();
+		instance_ = new WeakMethodDelegateBase_NoParams_NoVar<UserClass>(object, func);
+	}
+
+	template< class UserClass, class VarOneType>
+	void BindW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_OneVar< UserClass, VarOneType >::FMethodPtr func
+		, VarOneType var1)
+	{
+		Unbind();
+		instance_ = new WeakMethodDelegateBase_NoParams_OneVar<UserClass, VarOneType>(object, func, var1);
+	}
+
+	template< class UserClass, class VarOneType, class VarTwoType>
+	void BindW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_TwoVar< UserClass, VarOneType, VarTwoType >::FMethodPtr func
+		, VarOneType var1, VarTwoType var2)
+	{
+		Unbind();
+		instance_ = new WeakMethodDelegateBase_NoParams_TwoVar<UserClass, VarOneType, VarTwoType>(object, func, var1, var2);
+	}
 
 	template< class FunctorType>
 	void BindF(const FunctorType& functor)
@@ -260,6 +358,26 @@ public:
 		VarOneType var1, VarTwoType var2)
 	{		
 		return AddInternal(new SPMethodDelegateBase_NoParams_TwoVar<UserClass, VarOneType, VarTwoType>(object, func, var1, var2));
+	}
+	
+	template< class UserClass>
+	DelegateHandle AddW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_NoVar< UserClass >::FMethodPtr func)
+	{		
+		return AddInternal(new WeakMethodDelegateBase_NoParams_NoVar<UserClass>(object, func));
+	}
+
+	template< class UserClass, class VarOneType>
+	DelegateHandle AddW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_OneVar< UserClass, VarOneType >::FMethodPtr func,
+		VarOneType var1)
+	{		
+		return AddInternal(new WeakMethodDelegateBase_NoParams_OneVar<UserClass, VarOneType>(object, func, var1));
+	}
+
+	template< class UserClass, class VarOneType, class VarTwoType>
+	DelegateHandle AddW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_NoParams_TwoVar< UserClass, VarOneType, VarTwoType >::FMethodPtr func,
+		VarOneType var1, VarTwoType var2)
+	{		
+		return AddInternal(new WeakMethodDelegateBase_NoParams_TwoVar<UserClass, VarOneType, VarTwoType>(object, func, var1, var2));
 	}
 
 	template< class FunctorType>
