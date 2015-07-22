@@ -1,9 +1,9 @@
 #pragma once
 #include "ModelCore/PropertyObject.h"
 
-class MODELCORE_API PropertyChangedArgs : public IObject
+class MODELCORE_API PropertyChangedArgs : public IObjectImpl<PropertyChangedArgs, IObject>
 {
-	IMPLEMENT_IOBJECT_THREADSAFE()
+	//IMPLEMENT_IOBJECT_THREADSAFE()
 public:
 	PropertyChangedArgs(const std::string& name);
 	const std::string& Name() const;	

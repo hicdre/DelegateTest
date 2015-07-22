@@ -18,9 +18,9 @@ enum PropertyValueType
 	PropertyString,
 };
 
-class MODELCORE_API PropertyValue : public IObject
+class MODELCORE_API PropertyValue : public IObjectImpl<PropertyValue, IObject>
 {
-	IMPLEMENT_IOBJECT_THREADSAFE()
+	//IMPLEMENT_IOBJECT_THREADSAFE()
 public:
 	PropertyValue() : type_(PropertyNull) {}
 	PropertyValue(bool v) { SetBoolValue(v); }

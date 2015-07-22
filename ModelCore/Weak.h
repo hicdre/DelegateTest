@@ -80,7 +80,7 @@ class WPtr
 public:
 	WPtr(const WeakRef& ref) : ref_(ref) {}
 
-	T* get() {
+	T* get() const {
 		if (T* p = ref_->get<T>())
 			return p;
 		return nullptr;
@@ -129,7 +129,7 @@ public:
 	void ReleaseWeak()
 	{
 		if (ref_)
-			ref_->Reset();
+			ref_->Invalid();
 	}
 
 private:
@@ -138,17 +138,17 @@ private:
 
 //一般对象，IObject对象
 template <class T>
-class SupportThreadLocalWeak : public T
+class SupportThreadLocalWeak
 {
 public:
 	~SupportThreadLocalWeak() {
 		if (ref_)
-			ref_->Reset();
+			ref_->Invalid();
 	}
 	
 	WPtr<T> GetWeak() {
 		if (!ref_)
-			ref_.reset(new WeakFlag(this));
+			ref_.reset(new WeakFlag((T*)this));
 		return WPtr<T>(ref_);
 	}
 

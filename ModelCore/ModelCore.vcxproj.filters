@@ -104,9 +104,18 @@
       <Filter>export</Filter>
     </ClInclude>
     <ClInclude Include="Delegate_NoParams.h">
-      <Filter>export</Filter>
+      <Filter>myself</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate_OneParam.h">
+      <Filter>myself</Filter>
     </ClInclude>
     <ClInclude Include="DelegateBase.h">
+      <Filter>myself</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>myself</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelInternal.h">
       <Filter>export</Filter>
     </ClInclude>
   </ItemGroup>
@@ -133,7 +142,10 @@
       <Filter>delegate</Filter>
     </ClCompile>
     <ClCompile Include="DelegateBase.cpp">
-      <Filter>delegate</Filter>
+      <Filter>myself</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelInternal.cpp">
+      <Filter>export</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

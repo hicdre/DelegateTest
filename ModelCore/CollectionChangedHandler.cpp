@@ -243,9 +243,9 @@ CollectionChangedArgs::CollectionChangedArgs( CollectionChangedAction action )
 // 	return new CollectionChangedArgs(action, changedItems, index, oldIndex);
 // }
 
-class CollectionChangedCallbackHandler : public ICollectionChangedHandler
+class CollectionChangedCallbackHandler : public IObjectImpl<CollectionChangedCallbackHandler, ICollectionChangedHandler>
 {
-	IMPLEMENT_IOBJECT_THREADSAFE();
+	//IMPLEMENT_IOBJECT_THREADSAFE();
 public:	
 	CollectionChangedCallbackHandler(const CollectionChangedCallback& func) : func_(func) {}
 	virtual void OnCollectionChanged(const Ptr<IObject>& sender, const Ptr<CollectionChangedArgs>& args) override

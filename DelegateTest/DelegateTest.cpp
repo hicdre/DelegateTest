@@ -32,10 +32,10 @@ public:
 
 //DECLARE_DELEGATE_OneParam( FStringDelegate, const std::string& );
 
-
+extern void RunDelegateNoParamsTest();
 int _tmain(int argc, _TCHAR* argv[])
 {
-
+	RunDelegateNoParamsTest();
 	std::shared_ptr<FLogWriter> LogWriter(new FLogWriter());
 // 	FSimpleDelegate WriteToLogDelegate;
 // 	WriteToLogDelegate.BindSP( LogWriter, &FLogWriter::WriteToLog, "xxx" );
