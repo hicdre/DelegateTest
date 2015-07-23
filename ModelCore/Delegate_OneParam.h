@@ -1,5 +1,5 @@
 #pragma once
-#include "DelegateBase.h"
+#include "ModelCore/Delegate/DelegateBase.h"
 
 #if 1 //接口定义
 
@@ -28,6 +28,7 @@ private:
 	DelegateHandle handle_;
 };
 
+#if DELEGATE_SUPPORT_SP
 template<class UserClass, class ParamOneType>
 class SPMethodDelegateBase_OneParam_NoVar : public MethodDelegateBase_OneParam<ParamOneType>
 {
@@ -108,7 +109,9 @@ private:
 	VarOneType var1_;
 	VarTwoType var2_;
 };
+#endif //#if DELEGATE_SUPPORT_SP
 
+#if DELEGATE_SUPPORT_WEAK
 template<class UserClass, class ParamOneType>
 class WeakMethodDelegateBase_OneParam_NoVar : public MethodDelegateBase_OneParam<ParamOneType>
 {
@@ -183,7 +186,9 @@ private:
 	VarOneType var1_;
 	VarTwoType var2_;
 };
+#endif //DELEGATE_SUPPORT_WEAK
 
+#if DELEGATE_SUPPORT_FUNCTOR
 template<class FunctorType, class ParamOneType>
 class FunctorMethodDelegateBase_OneParam_NoVar : public MethodDelegateBase_OneParam<ParamOneType>
 {
@@ -233,7 +238,7 @@ private:
 	VarOneType var1_;
 	VarTwoType var2_;
 };
-
+#endif //DELEGATE_SUPPORT_FUNCTOR
 
 #endif
 
@@ -245,6 +250,7 @@ public:
 	Delegate_OneParam() : instance_(NULL) {}
 	Delegate_OneParam(IMethodDelegateInstanceType* instance) : instance_(instance) {}
 	~Delegate_OneParam() { Unbind(); }
+#if DELEGATE_SUPPORT_SP
 	template< class UserClass>
 	void Bind(const std::shared_ptr< UserClass >& object, typename SPMethodDelegateBase_OneParam_NoVar< UserClass, ParamOneType >::FMethodPtr func)
 	{
@@ -267,7 +273,9 @@ public:
 		Unbind();
 		instance_ = new SPMethodDelegateBase_OneParam_TwoVar<UserClass, ParamOneType, VarOneType, VarTwoType>(object, func, var1, var2);
 	}
+#endif //DELEGATE_SUPPORT_SP
 
+#if DELEGATE_SUPPORT_WEAK
 	template< class UserClass>
 	void BindW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_OneParam_NoVar< UserClass, ParamOneType >::FMethodPtr func)
 	{
@@ -290,12 +298,14 @@ public:
 		Unbind();
 		instance_ = new WeakMethodDelegateBase_OneParam_TwoVar<UserClass, ParamOneType, VarOneType, VarTwoType>(object, func, var1, var2);
 	}
+#endif //DELEGATE_SUPPORT_WEAK
 
+#if DELEGATE_SUPPORT_FUNCTOR
 	template< class FunctorType>
 	void BindF(const FunctorType& functor)
 	{
 		Unbind();
-		instance_ = new FunctorMethodDelegateBase_OneParam_NoVar<FunctorType>(functor);
+		instance_ = new FunctorMethodDelegateBase_OneParam_NoVar<FunctorType, ParamOneType>(functor);
 	}
 
 	template< class FunctorType, class VarOneType>
@@ -311,14 +321,8 @@ public:
 		Unbind();
 		instance_ = new FunctorMethodDelegateBase_OneParam_TwoVar<FunctorType, ParamOneType, VarOneType, VarTwoType>(functor, var1, var2);
 	}
-// 	template<class UserClass>
-// 	class SPMethodDelegate : public SPMethodDelegateBase_OneParam_NoVar<UserClass>
-// 	{
-// 	public:
-// 		SPMethodDelegate(const std::shared_ptr< UserClass >& InUserObject, 
-// 			typename SPMethodDelegateBase_OneParam_NoVar<UserClass>::FMethodPtr InMethodPtr)
-// 			: SPMethodDelegateBase_OneParam_NoVar<UserClass>(InUserObject, InMethodPtr);
-// 	};
+#endif //DELEGATE_SUPPORT_FUNCTOR
+
 	void Unbind()
 	{
 		if (instance_)
@@ -345,6 +349,7 @@ class MultiDelegate_OneParam
 {
 public:	
 	typedef IMethodDelegateBase_OneParam<ParamOneType> IMethodDelegateInstanceType;	
+#if DELEGATE_SUPPORT_SP	
 	template< class UserClass>
 	DelegateHandle Add(const std::shared_ptr< UserClass >& object, typename SPMethodDelegateBase_OneParam_NoVar< UserClass, ParamOneType >::FMethodPtr func)
 	{		
@@ -364,7 +369,9 @@ public:
 	{		
 		return AddInternal(new SPMethodDelegateBase_OneParam_TwoVar<UserClass, ParamOneType, VarOneType, VarTwoType>(object, func, var1, var2));
 	}
+#endif //DELEGATE_SUPPORT_SP
 
+#if DELEGATE_SUPPORT_WEAK
 	template< class UserClass>
 	DelegateHandle AddW(const WPtr< UserClass >& object, typename WeakMethodDelegateBase_OneParam_NoVar< UserClass, ParamOneType >::FMethodPtr func)
 	{
@@ -384,7 +391,9 @@ public:
 	{
 		return AddInternal(new WeakMethodDelegateBase_OneParam_TwoVar<UserClass, ParamOneType, VarOneType, VarTwoType>(object, func, var1, var2));
 	}
+#endif //DELEGATE_SUPPORT_WEAK
 
+#if DELEGATE_SUPPORT_FUNCTOR
 	template< class FunctorType>
 	DelegateHandle AddF(const FunctorType& functor)
 	{
@@ -402,7 +411,7 @@ public:
 	{
 		return AddInternal(new FunctorMethodDelegateBase_OneParam_TwoVar<FunctorType, ParamOneType, VarOneType, VarTwoType>(functor, var1, var2));
 	}
-
+#endif //DELEGATE_SUPPORT_FUNCTOR
 	void Execute(ParamOneType param1)
 	{
 		const std::vector<IMethodDelegateInstanceType*>& instacneList = GetInstanceList();
